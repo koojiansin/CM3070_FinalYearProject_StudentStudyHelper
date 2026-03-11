@@ -1,0 +1,219 @@
+[0.00-1.50] Audio: Hello, world.
+[1.50-4.42] Audio: My name is David Malan, and I teach CS50, which is Harvard
+[4.42-7.18] Audio: University's introduction to the intellectual enterprises
+[7.18-9.46] Audio: of computer science and the art of programming.
+[9.46-11.90] Audio: The course is also offered through the University of Oxford,
+[11.90-14.14] Audio: as well as via open courseware, which means anyone
+[14.14-16.22] Audio: can take the course online for free.
+[16.22-18.02] Audio: In fact, if you'd like to start yourself,
+[18.02-20.90] Audio: you can visit CS50.edx.org.
+[20.90-24.38] Audio: Now, for the past several years, AI-based tools like ChatGPT
+[24.38-27.06] Audio: have simply been all too helpful, all too willing to answer
+[27.06-29.30] Audio: a student's question outright, or even provide
+[29.30-32.98] Audio: outright solutions to code in a class like ours, which is largely
+[32.98-34.46] Audio: oriented around programming.
+[34.46-38.18] Audio: And so a few years back, we decreed early on through policy
+[38.18-41.02] Audio: in the course of syllabus that it is simply not reasonable to use
+[41.02-45.26] Audio: AI-based tools like ChatGPT to either answer questions or write code.
+[45.26-47.94] Audio: But we did want to meet students halfway and somehow leverage
+[47.94-49.90] Audio: as best we can this nascent technology.
+[49.90-54.14] Audio: And so at the same time, we deemed it reasonable to use CS50's own AI-based
+[54.14-57.98] Audio: software, including the so-called CS50 Duck, or DDB, DuckDebugger
+[57.98-62.22] Audio: for short, in CS50.AI and CS50.dev, two applications
+[62.22-64.34] Audio: that we provide to students throughout the course.
+[64.34-68.94] Audio: This is to say that we essentially built our own layer on top of the underlying
+[68.94-72.62] Audio: APIs or application programming interfaces that companies like OpenAI,
+[72.62-76.62] Audio: Microsoft, and others provide so as to build and affect our own personality
+[76.62-79.54] Audio: in the form of, in our case, indeed, a rubber duck.
+[79.54-82.80] Audio: Now, for those unfamiliar, it's common place in programming circles
+[82.80-87.02] Audio: to exercise what's called rubber duck debugging, whereby, in the absence
+[87.06-89.74] Audio: of having a colleague, a family member, or a friend who knows more than you
+[89.74-93.58] Audio: about the subject, you should verbalize your confusion, your questions,
+[93.58-96.70] Audio: to an NMN object on your desk like a rubber duck.
+[96.70-99.30] Audio: And through that process of verbalizing your confusion,
+[99.30-101.30] Audio: often that proverbial light bulb goes off
+[101.30-104.10] Audio: and you realize the illogic in your thoughts,
+[104.10-106.90] Audio: even though the duck might not so much as quack back at you.
+[106.90-110.22] Audio: Now, we tried to implement this a few years ago virtually, even before the days
+[110.22-114.14] Audio: of AI, via a chat interface within CS50's own programming environment.
+[114.14-116.10] Audio: For instance, here is a screenshot of the same.
+[116.10-119.38] Audio: And if a student were to start a conversation within this virtual rubber
+[119.38-122.54] Audio: duck environment, like I'm hoping you can help me solve a problem,
+[122.54-125.42] Audio: for a few years, this virtual rubber duck would, in fact, just
+[125.42-129.58] Audio: quack back at students once, twice, or three times, pseudo-randomly.
+[129.58-132.78] Audio: And we have anecdotal evidence that suggests that this alone was sufficient
+[132.78-136.06] Audio: to often help unblock students, because they still went through that exercise
+[136.06-140.06] Audio: as a verbalizing, or at least typing out what confusion they might have had.
+[140.06-142.42] Audio: Now, much to their surprise just a few years ago,
+[142.42-146.30] Audio: thanks to chat.gbt and the underlying APIs that are now available,
+[146.30-150.30] Audio: this same virtual duck started literally responding to students in English,
+[150.30-154.38] Audio: instead, overnight, if not other human languages as well.
+[154.38-158.02] Audio: And so this talk is about how we have leveraged these underlying APIs
+[158.02-162.62] Audio: to build our own virtual rubber duck that's focused primarily on CS50.
+[162.62-165.62] Audio: But through lessons learned, we can generalize some of our own results
+[165.62-168.22] Audio: to how other fields and other courses and other faculty
+[168.22-170.02] Audio: might do the same for themselves.
+[170.02-172.82] Audio: What we set out to do, in effect, was implement what we might describe
+[172.82-176.26] Audio: as pedagogical guardrails on top of these underlying APIs,
+[176.26-180.26] Audio: to, in effect, make tools like chat.gbt less helpful,
+[180.26-185.70] Audio: and to behave much more akin to a good teacher leading a student
+[185.70-188.94] Audio: to a solution, as opposed to providing an answer outright.
+[188.94-190.94] Audio: Ultimately, our goal has been to provide students,
+[190.94-194.18] Audio: within, in effect, office hours, one-on-one opportunities for support,
+[194.18-198.98] Audio: 24-7 around the clock, and really to approximate a one-to-one student-to-teacher
+[198.98-203.14] Audio: ratio, or, if you will, a one-to-one student-to-duck ratio.
+[203.14-205.70] Audio: And so architecturally, what we built a few years back
+[205.70-208.62] Audio: and have been iterating on since looks a little something like this,
+[208.62-211.54] Audio: whereby in the middle of all this is a central architecture,
+[211.54-215.58] Audio: a web-based infrastructure known as CS50.ai, which is not only a web
+[215.58-218.78] Audio: address that students can visit, but also the channel through which
+[218.78-220.98] Audio: all of the features flow.
+[220.98-225.98] Audio: It talks, ultimately, to APIs for Microsoft, top Azure, as well as OpenAI.
+[225.98-229.50] Audio: And then we also have our own local vector database, so to speak,
+[229.50-232.94] Audio: to implement features like retrieval, augmented generation, or RAG,
+[232.94-235.06] Audio: whereby we can query our own local database,
+[235.06-239.02] Audio: so as to focus the duck's answers all the more precisely on the course's
+[239.02-239.98] Audio: own material.
+[239.98-241.66] Audio: For this talk, though, we'll focus primarily
+[241.66-244.38] Audio: on what is student-facing in the form of the features
+[244.38-246.82] Audio: that these underlying technologies now provide.
+[246.82-249.66] Audio: Now, this has been deployed not only on campus here at Harvard,
+[249.66-252.90] Audio: but as well as to hundreds of thousands of students and teachers
+[252.90-253.82] Audio: across the world.
+[253.86-257.90] Audio: In fact, as of today, we're up to some 327,000 students and teachers
+[257.90-261.58] Audio: have used the same, averaging 21,000 prompts or questions
+[261.58-264.74] Audio: per day, totaling 15.5 million total so far.
+[264.74-267.02] Audio: And so this scale, in particular, has yielded
+[267.02-269.50] Audio: some interesting results for us along the way.
+[269.50-273.10] Audio: Our thanks in particular for our friends at OpenAI, Microsoft, GitHub,
+[273.10-276.78] Audio: and elsewhere for making all this and more, indeed, possible.
+[276.78-279.74] Audio: Now, the tool that students use in CS50 to write code
+[279.74-283.30] Audio: is called Visual Studio Code, or VS Code for short, which is a popular,
+[283.30-285.30] Audio: largely open source product for Microsoft
+[285.30-287.58] Audio: that you can download on your own Macs or PCs,
+[287.58-290.62] Audio: or nowadays, thanks to cloud providers like GitHub
+[290.62-292.94] Audio: used in the cloud in the form of a web browser.
+[292.94-296.74] Audio: Indeed, at CS50.dev, students can log in to an interface quite like this.
+[296.74-300.62] Audio: And everything is ready to go for them, because via GitHub code spaces,
+[300.62-303.82] Audio: and in turn, this entry point, we can preinstall most everything
+[303.82-305.46] Audio: students might need throughout the course
+[305.46-308.82] Audio: so that they don't struggle with a start of semester technical support
+[308.82-309.42] Audio: headaches.
+[309.42-310.70] Audio: At the end of the semester, though, they
+[311.10-314.82] Audio: are encouraged to actually download the same onto their own Mac or PC
+[314.82-317.82] Audio: and decouple themselves from the same infrastructure.
+[317.82-320.46] Audio: Now, we first set out to do something fairly modest.
+[320.46-325.30] Audio: Could we use AI to help students explain lines of code they didn't understand?
+[325.30-328.58] Audio: And so what we did, using VS Code's extensions model,
+[328.58-332.46] Audio: is we wrote our own plugin, in effect, whereby now, here's a screenshot,
+[332.46-335.90] Audio: thereof, if students were to open up some code, for instance, a C file
+[335.90-338.54] Audio: like this, highlight one or more lines of code,
+[338.58-341.30] Audio: thanks to this plugin that we contributed to VS Code.
+[341.30-344.50] Audio: They can right click or control click, select an option that doesn't come
+[344.50-348.26] Audio: by default with VS Code, but we added it, called explain highlighted code.
+[348.26-350.58] Audio: And then on the right-hand side of the screen, within seconds
+[350.58-355.66] Audio: will they see a chat GPT-like explanation of those one or more lines of code,
+[355.66-358.82] Audio: akin to what a good teacher might have done while walking students
+[358.82-359.42] Audio: through the same.
+[359.42-363.14] Audio: But this is all entirely automatically generated.
+[363.14-366.06] Audio: We next set out, after that feature, to see if we could advise students
+[366.06-367.82] Audio: on how to improve their code style.
+[367.82-371.06] Audio: The aesthetics, the formatting, thereof, without simply improving it
+[371.06-372.50] Audio: automatically for them.
+[372.50-375.46] Audio: And so within VS Code, here is a screenshot of another C file,
+[375.46-376.98] Audio: this one not well-formatted.
+[376.98-380.38] Audio: Everything is left aligned, which isn't the way it should be done.
+[380.38-383.58] Audio: But now, if students click a button at top right, called style 50,
+[383.58-386.50] Audio: they can see left and right, their code at left,
+[386.50-389.18] Audio: and the way their code should ideally look at right,
+[389.18-390.98] Audio: subject to a so-called style guide.
+[390.98-392.54] Audio: And with red and green highlights, they'll
+[392.54-395.42] Audio: see what they might need to add or subtract to make it look the same.
+[395.42-397.74] Audio: But if they don't quite see that or have the muscle memory for doing
+[397.74-400.90] Audio: so themselves, they can click on another button, explain changes,
+[400.90-404.22] Audio: where again, they'll see a chat GPT-like explanation of how and perhaps
+[404.22-408.10] Audio: why they should make their code at left, look more like that on the right.
+[408.10-409.78] Audio: And once they've developed that muscle memory,
+[409.78-414.46] Audio: they can in fact click and apply changes button and just do all of this automatically.
+[414.46-417.94] Audio: But more challenging, until the advent and popularization now of AI
+[417.94-420.70] Audio: and these underlying APIs, has been advising students
+[420.70-423.06] Audio: on how to improve their code's design.
+[423.06-426.94] Audio: That is, not only should it be correct, but it should ideally be well-written
+[426.94-429.26] Audio: as efficient and well-designed as possible.
+[429.26-432.50] Audio: This is something for which we've largely relied on human TAs, much
+[432.50-435.82] Audio: like the world of code reviews in the industry.
+[435.82-439.30] Audio: And so this was ripe for disruption by AI as well.
+[439.30-441.66] Audio: Now, in fact, within the same programming environment,
+[441.66-444.14] Audio: students can click on a Design 50 button.
+[444.14-446.62] Audio: And even though they might have working correct code,
+[446.62-450.14] Audio: this Design 50 button will give them a chat GPT-like explanation of how
+[450.14-454.98] Audio: they might further improve this code akin indeed to a code review so as
+[455.02-458.46] Audio: to make it not only correct, but more maintainable, more readable,
+[458.46-463.14] Audio: and so forth by their TA in a class or their colleagues in the real world.
+[463.14-468.34] Audio: Now, students also have at CS50.AI a similar interface
+[468.34-471.66] Audio: to this underlying virtual duck, whereby they can ask outright questions
+[471.66-474.66] Audio: and copy-paste code that might not be within that same window.
+[474.66-477.30] Audio: We, of course, still do provide students with a disclaimer like this
+[477.30-479.34] Audio: above here to remind them to think critically,
+[479.34-483.62] Audio: and so far as these AIs can certainly hallucinate or really make things up,
+[483.62-486.38] Audio: given that they're ultimately just a statistical model of language.
+[486.38-489.62] Audio: But working already quite well is this ability for students
+[489.62-492.42] Audio: to ask a question like this, maybe with a few lines of code,
+[492.42-496.74] Audio: and get back a teacher-like explanation of how they might now
+[496.74-499.14] Audio: solve whatever problems at hand for being
+[499.14-503.90] Audio: seeing minimal lines of code, if any, generally trying to lead students,
+[503.90-507.50] Audio: indeed, to a solution rather than providing it to them outright.
+[507.50-510.26] Audio: Now, architecture at a high level, what we're really just doing
+[510.26-513.58] Audio: is providing these underlying APIs with a so-called system prompt,
+[513.58-516.78] Audio: which are English-like instructions to the underlying AI
+[516.78-519.14] Audio: as to how we want it to behave for our users.
+[519.14-521.90] Audio: For instance, in simplified form, what we're essentially telling
+[521.90-525.54] Audio: these underlying APIs is that you are a friendly and supportive teaching
+[525.54-527.34] Audio: assistant for CS50.
+[527.34-529.16] Audio: You are also a rubber duck.
+[529.16-532.62] Audio: Answer student questions only about CS50 in the field of computer science.
+[532.62-534.98] Audio: Do not answer questions about unrelated topics.
+[534.98-537.26] Audio: Do not provide full answers to problem sets,
+[537.26-539.62] Audio: as this would violate academic honesty.
+[539.62-540.90] Audio: Answer this question.
+[540.90-544.92] Audio: And then effectively, we append to the system prompt, a so-called user
+[544.92-547.82] Audio: prompt, which is really just the question that the students themselves
+[547.82-548.78] Audio: had asked.
+[548.78-553.06] Audio: Now, the impact of these tools and others has been immediate already.
+[553.06-554.98] Audio: Without AI, just a few years ago, we were
+[554.98-559.74] Audio: seeing that students asked an average of 0.89 questions each
+[559.74-562.50] Audio: at scale across large numbers of students on campus.
+[562.50-564.86] Audio: With AI and the same tools, students are now
+[564.90-569.78] Audio: asking 0.28 questions each of TAs, generally preferring and leaning
+[569.78-574.02] Audio: toward asking virtually and interactively those same kinds of questions
+[574.02-575.38] Audio: of the virtual duck.
+[575.38-578.42] Audio: The impact on office hours, one-on-one opportunities in person for help.
+[578.42-581.86] Audio: Without AI, students were attending 51% of the available office hours.
+[581.86-585.18] Audio: With AI, students are attending only 30% of the same.
+[585.18-588.82] Audio: And in terms of assessments, like the code that they themselves are submitting,
+[588.82-590.78] Audio: grades are going up and up and up we're finding,
+[590.78-595.58] Audio: which is calling to question exactly what we are trying to and want
+[595.58-598.66] Audio: to assess insofar as it's a lot harder now to distinguish students.
+[598.66-601.50] Audio: But it does stand to reason that if we're now giving them iterative feedback
+[601.50-605.18] Audio: throughout the week, that certainly their submission should be much better
+[605.18-607.50] Audio: than it would have been without this iterative feedback.
+[607.50-609.66] Audio: And so in the near term, we've already begun experimenting
+[609.66-612.42] Audio: with the resurrection of yesterday's oral examinations,
+[612.42-616.18] Audio: implemented digitally, whereby the duck is now asking students dynamically
+[616.18-618.82] Audio: and adaptively questions about the week's material,
+[618.86-621.70] Audio: so as to provide students with their own individualized assessment
+[621.70-625.30] Audio: as to where their strengths and weaknesses curriculally might be.
+[625.30-627.94] Audio: Our favorite quote, though, from one student in our initial evaluation
+[627.94-629.34] Audio: of all this was this.
+[629.34-631.46] Audio: It felt like having a personal tutor.
+[631.46-634.94] Audio: I love how AI bots will answer questions without ego and without judgment,
+[634.94-637.06] Audio: generally entertaining even the stupidest of questions
+[637.06-639.06] Audio: without treating them like they're stupid.
+[639.06-643.74] Audio: It has an, as one could expect, an inhuman level of patience.
+[643.74-646.82] Audio: For all this and more, please feel free to take a look at this paper
+[646.82-650.82] Audio: from ACM Sixie titled Teaching CS50 with AI, as well as more recently
+[650.82-654.10] Audio: a follow-on paper entitled Improving AI and CS50
+[654.10-657.38] Audio: to learn at a lower level all that we've done, what's worked well,
+[657.38-658.70] Audio: what has not, and more.
+[658.70-663.22] Audio: In fact, these papers and all links herein can be found at this QR code here.
+[663.22-666.90] Audio: This then was Teaching CS50 with AI.

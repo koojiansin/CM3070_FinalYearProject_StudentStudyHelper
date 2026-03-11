@@ -1,0 +1,396 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accessible Study Buddy - Prototype</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 2rem;
+            box-sizing: border-box;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 1.25rem;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        h1 { color: #333; margin: 0 0 0.5rem 0; font-size: 1.35rem; }
+        p { margin: 0 0 1rem 0; color: #555; }
+
+        /* Grid layout: left = upload, right = results */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            align-items: start;
+        }
+
+        @media (min-width: 800px) {
+            .grid { grid-template-columns: 420px 1fr; }
+        }
+
+        .panel {
+            background: #fff;
+            border-radius: 8px;
+            padding: 1rem;
+            border: 1px solid #ececec;
+        }
+
+        .upload-area {
+            border: 2px dashed #d8d8df;
+            padding: 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            text-align: center;
+        }
+        .upload-area:hover { background-color: #fafafa; border-color: #9aa1ff; }
+        input[type="file"] { display: none; }
+        label { cursor: pointer; color: #1850d4; font-weight: 600; }
+
+        .meta {
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        button {
+            background-color: #1850d4;
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            font-size: 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 0.75rem;
+        }
+        button:disabled { background-color: #bfc7f6; cursor: not-allowed; }
+
+        #status { margin-top: 0.5rem; font-size: 0.95rem; color: #555; }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1850d4;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            animation: spin 1s linear infinite;
+            display: none;
+            margin: 0.6rem 0;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Result panel */
+        .result-box {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            max-height: 60vh;
+            overflow: hidden;
+            background: #fbfbfd;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #e6e6ee;
+        }
+
+        /* Ensure long lines wrap; no horizontal scrolling */
+        #outputLog {
+            white-space: pre-wrap;       /* wrap long lines while preserving newlines */
+            word-break: break-word;
+            overflow-wrap: anywhere;
+            overflow-y: auto;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 8px;
+            font-size: 0.9rem;
+            line-height: 1.45;
+            background: #fff;
+            border-radius: 6px;
+            border: 1px solid #efeff5;
+            max-height: calc(60vh - 70px);
+        }
+
+        /* small helper for labels inside panels */
+        .panel-title { font-weight: 600; margin-bottom: 0.5rem; color: #222; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Student Study Helper</h1>
+    <p>Upload a lecture video to generate a multimodal summary.</p>
+    
+    <form id="uploadForm" enctype="multipart/form-data">
+        <div class="upload-area" id="dropZone">
+            <input type="file" name="file" id="fileInput" accept="video/mp4,video/mkv,video/avi" required>
+            <label for="fileInput">Click to Upload Video</label>
+            <p id="fileName" style="margin-top: 10px; color: #666; font-size: 0.9em;">No file selected</p>
+        </div>
+        <button type="submit" id="submitBtn">Start Processing</button>
+    </form>
+
+    <div id="loadingSpinner" class="spinner"></div>
+    <div id="status"></div>
+    
+    <div id="resultArea" class="result-box">
+        <strong>Processing Output:</strong>
+        <pre id="outputLog">Waiting for results...</pre>
+    </div>
+</div>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const fileNameDisplay = document.getElementById('fileName');
+    const form = document.getElementById('uploadForm');
+    const statusDiv = document.getElementById('status');
+    const spinner = document.getElementById('loadingSpinner');
+    const btn = document.getElementById('submitBtn');
+    const resultArea = document.getElementById('resultArea');
+    const outputLog = document.getElementById('outputLog');
+
+    fileInput.addEventListener('change', function() {
+        if(this.files && this.files.length > 0) {
+            fileNameDisplay.textContent = this.files[0].name;
+        }
+    });
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        if(!fileInput.files.length) {
+            alert("Please select a file first.");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', fileInput.files[0]);
+
+        // UI Updates
+        btn.disabled = true;
+        btn.innerText = "Processing...";
+        spinner.style.display = "block";
+        statusDiv.innerText = "Uploading and analyzing video. This may take a while...";
+        resultArea.style.display = "none";
+
+        try {
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                statusDiv.innerText = "Processing Complete!";
+                statusDiv.style.color = "green";
+                resultArea.style.display = "block";
+                outputLog.innerText = result.summary_preview;
+            } else {
+                statusDiv.innerText = "Error: " + result.error;
+                statusDiv.style.color = "red";
+            }
+        } catch (error) {
+            statusDiv.innerText = "Network Error: " + error.message;
+            statusDiv.style.color = "red";
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "Start Processing";
+            spinner.style.display = "none";
+        }
+    });
+</script>
+
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Study Helper</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f9; padding: 2rem; margin: 0;}
+        .container { background-color: white; padding: 2rem; border-radius: 10px; box-shadow: 0 6px 18px rgba(0,0,0,0.08); max-width: 900px; margin: 0 auto; }
+        
+        h1 { color: #333; margin-top: 0; }
+        p { color: #555; }
+
+        /* Tracker Styles */
+        #processing-section { display: none; padding: 2rem; border: 1px solid #e0e0e0; border-radius: 8px; margin-top: 1.5rem; background-color: #fafafa; }
+        .step-list { list-style: none; padding: 0; margin-top: 20px; }
+        .step-item { display: flex; align-items: center; margin-bottom: 20px; opacity: 0.4; transition: opacity 0.3s; font-size: 1.15rem; }
+        
+        /* State modifiers */
+        .step-item.active { opacity: 1; font-weight: 600; color: #0056b3; }
+        .step-item.done { opacity: 1; color: #28a745; }
+        
+        .step-icon { width: 35px; text-align: center; margin-right: 15px; font-size: 1.3rem; }
+        
+        /* Result Styles */
+        #resultArea { display: none; margin-top: 2rem; padding: 1.5rem; background: #fff; border: 1px solid #28a745; border-radius: 8px; box-shadow: 0 4px 12px rgba(40, 167, 69, 0.1);}
+        pre { white-space: pre-wrap; word-wrap: break-word; font-family: inherit; background: #f8f9fa; padding: 15px; border-radius: 5px; border: 1px solid #eee; }
+        
+        button { background: #0056b3; color: white; border: none; padding: 12px 24px; border-radius: 5px; cursor: pointer; font-size: 1rem; font-weight: bold; transition: background 0.3s;}
+        button:hover { background: #004494; }
+        button:disabled { background: #ccc; cursor: not-allowed;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Student Study Helper</h1>
+        <p>Upload a video lecture to automatically generate a study guide, extract key takeaways, and analyze visual slides.</p>
+        
+        <div id="upload-section">
+            <form id="uploadForm">
+                <input type="file" id="videoFile" accept="video/*" required style="margin-bottom: 1.5rem; display: block; font-size: 1rem;">
+                <button type="submit" id="processBtn"><i class="fas fa-upload"></i> Start Processing</button>
+            </form>
+        </div>
+
+        <div id="processing-section">
+            <h3 id="processing-title">Processing your lecture...</h3>
+            <p>This may take a few minutes. Please keep this tab open.</p>
+            
+            <ul class="step-list">
+                <li id="step-1" class="step-item">
+                    <span class="step-icon"><i class="fas fa-file-audio"></i></span>
+                    <span class="step-text">Step 1: Extracting Audio & Visual Frames</span>
+                </li>
+                <li id="step-2" class="step-item">
+                    <span class="step-icon"><i class="fas fa-comment-dots"></i></span>
+                    <span class="step-text">Step 2: Transcribing Speech (Whisper Model)</span>
+                </li>
+                <li id="step-3" class="step-item">
+                    <span class="step-icon"><i class="fas fa-image"></i></span>
+                    <span class="step-text">Step 3: Analyzing Visual Slides (BLIP Model)</span>
+                </li>
+                <li id="step-4" class="step-item">
+                    <span class="step-icon"><i class="fas fa-robot"></i></span>
+                    <span class="step-text">Step 4: Generating Study Guide (LLM Synthesis)</span>
+                </li>
+            </ul>
+        </div>
+
+        <div id="resultArea">
+            <h2 style="color: #28a745; margin-top: 0;"><i class="fas fa-check-circle"></i> Processing Complete!</h2>
+            <h3>Your Final Study Guide:</h3>
+            <pre id="outputLog"></pre>
+            <button onclick="window.location.reload()" style="margin-top: 15px; background: #6c757d;"><i class="fas fa-redo"></i> Process Another File</button>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('uploadForm');
+        const fileInput = document.getElementById('videoFile');
+        const btn = document.getElementById('processBtn');
+        const uploadSection = document.getElementById('upload-section');
+        const processingSection = document.getElementById('processing-section');
+        const resultArea = document.getElementById('resultArea');
+        const outputLog = document.getElementById('outputLog');
+
+        // Helper function to handle UI changes for each step
+        function updateStep(stepNumber, status) {
+            const stepEl = document.getElementById(`step-${stepNumber}`);
+            const icon = stepEl.querySelector('i');
+            
+            if (status === 'active') {
+                stepEl.className = 'step-item active';
+                icon.className = 'fas fa-spinner fa-spin'; // Makes the icon spin
+            } else if (status === 'done') {
+                stepEl.className = 'step-item done';
+                icon.className = 'fas fa-check-circle';    // Changes to a green checkmark
+            } else if (status === 'error') {
+                stepEl.className = 'step-item active';
+                stepEl.style.color = 'red';
+                icon.className = 'fas fa-exclamation-circle';
+            }
+        }
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            if(!fileInput.files.length) return;
+
+            const file = fileInput.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+
+            // Hide upload, show tracker
+            btn.disabled = true;
+            uploadSection.style.display = "none";
+            processingSection.style.display = "block";
+            resultArea.style.display = "none";
+
+            try {
+                // --- INITIAL UPLOAD ---
+                updateStep(1, 'active');
+                const uploadRes = await fetch('/upload', { method: 'POST', body: formData });
+                const uploadData = await uploadRes.json();
+                
+                if (!uploadData.success) throw new Error(uploadData.error || "Upload failed");
+                const filename = uploadData.filename; // Store the filename to pass to the next steps
+
+                // --- STEP 1: EXTRACT ---
+                const step1Res = await fetch('/step1', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: filename })
+                });
+                if (!(await step1Res.json()).success) throw new Error("Audio extraction failed");
+                updateStep(1, 'done');
+
+                // --- STEP 2: TRANSCRIBE ---
+                updateStep(2, 'active');
+                const step2Res = await fetch('/step2', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: filename })
+                });
+                if (!(await step2Res.json()).success) throw new Error("Transcription failed");
+                updateStep(2, 'done');
+
+                // --- STEP 3: VISUAL ANALYSIS ---
+                updateStep(3, 'active');
+                const step3Res = await fetch('/step3', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: filename })
+                });
+                if (!(await step3Res.json()).success) throw new Error("Visual Analysis failed");
+                updateStep(3, 'done');
+
+                // --- STEP 4: GENERATE SUMMARY ---
+                updateStep(4, 'active');
+                const step4Res = await fetch('/step4', {
+                    method: 'POST', headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filename: filename })
+                });
+                const finalData = await step4Res.json();
+                if (!finalData.success) throw new Error("Summary generation failed");
+                updateStep(4, 'done');
+
+                // --- SUCCESS! SHOW RESULTS ---
+                processingSection.style.display = "none";
+                resultArea.style.display = "block";
+                outputLog.innerText = finalData.summary_preview; // Displaying the study guide
+
+            } catch (error) {
+                alert("Error: " + error.message);
+                // Reset UI so user can try again
+                uploadSection.style.display = "block";
+                processingSection.style.display = "none";
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

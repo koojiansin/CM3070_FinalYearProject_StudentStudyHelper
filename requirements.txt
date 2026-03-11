@@ -1,0 +1,8 @@
+moviepy
+Pillow
+openai-whisper
+numpy
+flask
+werkzeug
+transformers
+torch
