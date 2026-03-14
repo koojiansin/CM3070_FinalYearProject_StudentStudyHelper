@@ -63,7 +63,6 @@ FRAME_INTERVAL_SECONDS = 5
 
 # --- LLM CONFIGURATION ---
 LLM_MODEL = "gemini-2.5-flash"
-# API_KEY = "AIzaSyCiUnxoApCcLvdFjnmv5KWgGQn11L_-Dsk" # Leave empty, will be provided at runtime
 API_KEY = os.getenv("GEMINI_API_KEY")
 STUDY_GUIDE_PATH = os.path.join(TEMP_DIR, "study_guide.md")
 AUDIO_TEXT_PATH = os.path.join(TEMP_DIR, "audio_transcript.txt")
