@@ -6,3 +6,4 @@ flask
 werkzeug
 transformers
 torch
+python-dotenv
