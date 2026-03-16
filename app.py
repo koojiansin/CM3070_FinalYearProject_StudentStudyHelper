@@ -15,6 +15,10 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 session_data = {}
 
 @app.route('/')
+def landing():
+    return render_template('landing.html')
+
+@app.route('/app')
 def index():
     return render_template('index.html')
 
