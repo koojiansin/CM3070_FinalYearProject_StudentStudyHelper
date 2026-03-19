@@ -2,141 +2,190 @@
 
 ## 1. Introduction to CS50 and AI Policy
 
-*   **Course Overview:** CS50 is Harvard University's introduction to computer science and programming. It's also offered through the University of Oxford and via open courseware for free online.
-*   **Access CS50:** Visit [cs50.edx.org](https://cs50.edx.org) to start the course.
-*   **AI Policy (Not Reasonable):**
-    *   AI-based tools like ChatGPT, Claude, Copilot, Gemini, Perplexity, etc., are **not reasonable** for suggesting or completing answers to questions or lines of code. These tools have become "all too helpful, all too willing to answer a student's question outright, or even provide outright solutions to code."
-    *   This policy was decreed early in the course syllabus.
+*   **What is CS50?**
+    *   Harvard University's introduction to computer science and programming.
+    *   Also offered through the University of Oxford and as open courseware (free online).
+    *   Can be accessed at [cs50.edx.org](http://cs50.edx.org)
+*   **Initial Policy on AI (ChatGPT et al.):**
+    *   **Not Reasonable:** Using AI-based software (such as ChatGPT, Claude, Copilot, Gemini, Perplexity, etc.) that suggests or completes answers to questions or lines of code. This would violate academic honesty and hinder learning.
+    *   **Reasonable:** Using CS50's own AI-based software, including the CS50 Duck (DDB) in [cs50.ai](http://cs50.ai) and [cs50.dev](http://cs50.dev).
+*   **Motivation for CS50's AI:** To leverage nascent AI technology while maintaining pedagogical integrity, building a custom layer on top of APIs from companies like OpenAI and Microsoft.
 
-## 2. CS50's Own AI-based Software: The CS50 Duck
+## 2. The CS50 Duck and Rubber Duck Debugging
 
-*   **CS50's Approach (Reasonable):**
-    *   Using CS50's own AI-based software is **reasonable**.
-    *   This includes the **CS50 Duck (DDB)**, available in **cs50.ai** and **cs50.dev**.
-*   **Leveraging AI:** CS50 built its own layer on top of underlying APIs from companies like OpenAI and Microsoft to incorporate a "personality" in the form of a rubber duck.
-*   **Goals:**
-    *   Implement **pedagogical guardrails** to make AI tools "less helpful" in terms of providing direct answers.
-    *   Behave like a good teacher, leading students to solutions rather than providing answers outright.
-    *   Provide students with 24/7 "office hours" for one-on-one support.
-    *   Approximate a **1:1 student-to-duck ratio**.
+*   **Concept of Rubber Duck Debugging:**
+    *   A common practice in programming.
+    *   Verbalizing confusion or questions to an inanimate object (like a rubber duck) on your desk.
+    *   The act of verbalization often clarifies thoughts and helps realize logical flaws, even if the "duck" doesn't respond.
+*   **Evolution of CS50's Virtual Duck:**
+    *   **Pre-AI (Virtual Duck Debugger):** Implemented virtually in CS50's programming environment even before modern AI. When students typed questions, the virtual duck would respond with "quack quack quack" (pseudo-randomly one, two, or three times). Anecdotal evidence suggests this alone helped students unblock themselves by forcing them to verbalize their thoughts.
+    *   **Post-AI:** With the advent of ChatGPT and underlying APIs, the virtual duck began responding literally in English (and other human languages), transforming into an intelligent tutor.
 
-## 3. The Concept of Rubber Duck Debugging
+## 3. Pedagogical Guardrails and Goals
 
-*   **Definition:** A common programming practice where you verbalize your confusion or questions to an inanimate object (like a rubber duck) on your desk.
-*   **Purpose:** The act of verbalizing often helps clarify thoughts, leading to a "proverbial light bulb" moment, even if the duck doesn't respond. This helps realize "the illogic in your thoughts."
+*   **Objective:** Implement "pedagogical guardrails" on top of underlying AI APIs.
+*   **Purpose:**
+    *   Make tools like ChatGPT *less helpful* in terms of providing direct answers.
+    *   Guide students to solutions, akin to a good teacher, rather than providing outright answers.
+    *   Approximate a 1:1 student-to-teacher (or student-to-duck) ratio.
+*   **Overall Goal:** Provide students with 24/7 "office hours" for one-on-one support.
 
-## 4. Evolution of the CS50 Duck Debugger
+## 4. Architectural Overview of CS50.ai
 
-*   **Pre-AI Era (Virtual Duck):**
-    *   Implemented virtually within CS50's programming environment even before AI's prevalence.
-    *   Initially, if a student typed a question like "I'm hoping you can help me solve a problem," the virtual duck would "quack back" (e.g., "ddb quack quack quack") one to three times pseudo-randomly.
-    *   Anecdotal evidence showed this was sufficient to unblock students, as the act of typing out their confusion helped them.
-*   **Post-AI Era:**
-    *   With the advent of ChatGPT and underlying APIs, the same virtual duck started "literally responding to students in English" (or other human languages) overnight.
-    *   Example response: "Of course, I'd be happy to help! Could you please provide more details about the problem you're facing?"
-
-## 5. Architectural Overview
-
-*   **Central Infrastructure:** **CS50.ai** serves as the central web-based infrastructure and channel for all features.
+*   **Central Infrastructure:** [cs50.ai](http://cs50.ai) (a web address and feature channel).
 *   **API Integration:** Communicates with APIs from Microsoft Azure and OpenAI.
-*   **Vector Database (RAG):** Utilizes a local vector database to implement Retrieval Augmented Generation (RAG). This allows querying CS50's own database to focus the duck's answers precisely on course material.
+*   **Local Vector Database:**
+    *   Used for Retrieval Augmented Generation (RAG).
+    *   Queries a local database to focus the duck's answers precisely on CS50 course material.
 
-## 6. Scale and Impact
+## 5. Scale and Impact
 
 *   **Deployment:** Deployed at Harvard and to hundreds of thousands of students and teachers worldwide.
 *   **Usage Statistics (as of lecture date):**
-    *   **327,000 users** (students and teachers)
-    *   **21,000 prompts/day** on average
-    *   **15.5 million total prompts** so far
+    *   **Users:** 327,000 students and teachers.
+    *   **Prompts:** Averaging 21,000 prompts/questions per day.
+    *   **Total Prompts:** 15.5 million so far.
+*   **Acknowledgements:** Thanks to OpenAI, Microsoft, GitHub, and others.
 
-## 7. CS50.dev and Visual Studio Code Integration
+## 6. CS50's Programming Environment: VS Code for CS50
 
-*   **Primary Coding Tool:** Visual Studio Code (VS Code) is used by students to write code. It's a popular, largely open-source product from Microsoft.
-*   **CS50.dev:** Students log into **cs50.dev**, a web-based interface that provides a pre-configured VS Code environment via GitHub Codespaces.
-    *   This pre-installs necessary tools, reducing "start of semester technical support headaches."
-    *   Students are encouraged to download VS Code onto their own machines by the end of the semester.
+*   **Tool:** Visual Studio Code (VS Code), a popular open-source product from Microsoft.
+*   **Access:**
+    *   Can be downloaded on personal Macs/PCs.
+    *   Accessible in the cloud via GitHub Codespaces at [cs50.dev](http://cs50.dev).
+*   **Benefits of CS50.dev:** Pre-installs necessary software, reducing technical headaches for students at the start of the semester. Students can eventually download their work to their local machines.
 
-## 8. AI Features in VS Code
+## 7. AI-Powered Features in VS Code for CS50
 
-CS50 developed a plugin for VS Code to provide AI-powered assistance:
+### 7.1. Explain Highlighted Code
 
-### A. Explain Highlighted Code
+*   **Functionality:** A custom plugin for VS Code.
+*   **Usage:** Students highlight one or more lines of code, right-click (or control-click), and select "Explain Highlighted Code."
+*   **Output:** A ChatGPT-like explanation appears, breaking down the code step-by-step, similar to what a teacher would provide.
 
-*   **Functionality:** Students can highlight one or more lines of code in a file (e.g., a C file like `hello.c`).
-*   **Usage:** Right-click (or Control-click) and select **"Explain Highlighted Code"**.
-*   **Output:** A ChatGPT-like explanation of the selected code appears, akin to a teacher walking students through it.
-    *   Example: For `hello.c`, an explanation would detail `#include <cs50.h>`, `#include <stdio.h>`, `int main(void)`, `string name = get_string(...)`, and `printf(...)`.
+    *   **Example (C code):**
+        ```c
+        #include <cs50.h>
+        #include <stdio.h>
 
-### B. Style50 (Code Style Improvement)
+        int main(void)
+        {
+            string name = get_string("What is your name? ");
+            printf("hello, %s\n", name);
+        }
+        ```
+    *   **Explanation Output (excerpt):**
+        > This code snippet is a simple C program that asks the user for their name and then greets them using their name. Let's break down the code step by step:
+        > 1. `#include <cs50.h>`: This line includes the "cs50.h" header file...
+        > 2. `#include <stdio.h>`: This line includes the "stdio.h" header file...
+        > 3. `int main(void)`: This line defines the main function...
 
-*   **Functionality:** Advises students on how to improve code aesthetics and formatting without automatically fixing it.
-*   **Usage:** Click the **"Style50"** button (top right).
-*   **Output:** Shows a side-by-side comparison: student's code on the left, ideally formatted code on the right (based on a style guide). Red and green highlights indicate additions/subtractions needed.
-*   **Explanation:** Students can click **"Explain Changes"** for a ChatGPT-like explanation of *how* and *why* to make the changes.
-    *   Example: Explains how an `#include` statement might be formatted differently or how a `for` loop's indentation should be adjusted.
-*   **Automation:** Once muscle memory is developed, students can click **"Apply Changes"** to automatically reformat the code.
+### 7.2. Style 50
 
-### C. Design50 (Code Design Improvement)
+*   **Functionality:** Advises students on how to improve their code style (aesthetics, formatting) without automatically fixing it initially.
+*   **Usage:**
+    *   Students click a "Style 50" button.
+    *   A side-by-side comparison shows their code (left) and the ideal formatted version (right), with red/green highlights indicating changes.
+*   **"Explain Changes" Feature:** Students can click "Explain Changes" to get a ChatGPT-like explanation of *how* and *why* they should make the suggested style improvements.
+*   **"Apply Changes" Feature:** Once muscle memory is developed, students can click "Apply Changes" to automatically format their code.
 
-*   **Functionality:** Advises students on how to improve code design (correctness, efficiency, readability, maintainability), a task traditionally reliant on human TAs or code reviews.
-*   **Usage:** Click the **"Design50"** button.
-*   **Output:** Provides a ChatGPT-like explanation of how to improve the code, even if it's already working correctly.
-    *   Example for `mario.py`: Identifies "design inefficiencies and unnecessary complexities," offering high-level feedback on:
-        1.  **Input Handling:** Suggests simplifying overly complex input validation loops.
-        2.  **Variable Usage:** Advises streamlining multiple unnecessary variables.
-        3.  **Loop Logic:** Points out convoluted nested loops for constructing output strings.
+    *   **Example (Poorly formatted C code):**
+        ```c
+        #include<stdio.h>
+        int main(void)
+        {
+        for(int i=0; i<3; i++)
+        {
+        printf("meow\n");
+        }
+        }
+        ```
+    *   **Explanation Output (excerpt):**
+        > The changes are made at line 1 and lines 5 to 8 in the file. At line 1, the change is in the inclusion of the header. It was originally written as `#include<stdio.h>` but has been modified to `#include <stdio.h>`. At lines 5 to 8, the changes are in the formatting of a for loop. It was originally written as:
+        > `for(int i=0; i<3; i++) { printf("meow\n"); }`
+        > But it has been modified to:
+        > `for(int i=0; i<3; i++) { printf("meow\n"); }`
 
-## 9. CS50.ai Direct Interface
+### 7.3. Design 50
 
-*   **Functionality:** Allows students to ask general questions and copy-paste code that might not be in the VS Code window.
-*   **Disclaimer:** A disclaimer reminds students to "think critically" as AI can "hallucinate or really make things up."
-*   **Output:** Provides teacher-like explanations, minimal lines of code (if any), generally leading students to a solution rather than providing it outright.
+*   **Functionality:** Advises students on how to improve their code's *design* (efficiency, readability, maintainability), even if it's functionally correct. This was traditionally reliant on human TAs.
+*   **Usage:** Students click a "Design 50" button.
+*   **Output:** Provides a ChatGPT-like explanation and high-level feedback, similar to a code review, to make code more maintainable, readable, and well-designed.
+
+    *   **Example (Python code):**
+        ```python
+        def mario():
+            x = input("Give me an integer x: ")
+            while not x.isdigit() or int(x) < 1 or int(x) > 8:
+                print("Please enter a number between 1 and 8:")
+                x = input()
+            # Parsing user input multiple times unnecessarily
+            height = int(x)
+            # Setting up unnecessary variables
+            counter = 0
+            output_string = ""
+            # Loop through each row
+            while counter < height:
+                # Convoluted logic to print spaces
+                for i in range(height - counter - 1):
+                    output_string += " "
+                # Even more convoluted logic to print hashes
+                for j in range(counter + 1):
+                    output_string += "#"
+                # Weird way to add a new line
+                output_string += "\n"
+                counter += 1
+            print(output_string)
+        ```
+    *   **Design Feedback (excerpt):**
+        > The code has several design inefficiencies and unnecessary complexities. Here are some high-level feedback points:
+        > 1.  **Input Handling:** The input validation loop is overly complex. Simplifying this would make the code more readable and maintainable.
+        > 2.  **Variable Usage:** The use of multiple variables like `counter` and `output_string` can be streamlined to reduce clutter.
+        > 3.  **Loop Logic:** The nested loops for constructing the output string are convoluted. Simplifying the logic for generating the output string would improve clarity.
+
+## 8. CS50.ai Web Interface
+
+*   **Functionality:** A direct web interface for students to ask questions and copy-paste code.
+*   **Disclaimer:** Includes a disclaimer reminding students to think critically, as AI can "hallucinate" or make things up.
+*   **Pedagogical Approach:** The AI provides teacher-like explanations, often with minimal code, generally leading students to a solution rather than providing it outright.
+
     *   **Example Interaction:**
-        *   **Student:** "My code is not working as expected, any ideas? `x = input('Give me an integer x: ')`, `y = input('Give me an integer y: ')`, `sum = x+y`, `print('x + y is: ' + sum)`"
-        *   **Duck:** Explains that `input()` returns a string, leading to concatenation instead of addition, and suggests converting inputs to integers using `int()`.
-            ```python
-            x = int(input("Give me an integer x: "))
-            y = int(input("Give me an integer y: "))
-            ```
+        *   **Student:** `My code is not working as expected, any ideas? x = input("Give me an integer x: ") y = input("Give me an integer y: ") sum = x+y print("x + y is: " + sum)`
+        *   **Duck:** `It seems like you're trying to add two integers, but the input() function in Python returns a string. So, when you try to add x and y, you're actually concatenating two strings, not adding two integers. To fix this, you can convert the inputs to integers using the int() function like so: x = int(input("Give me an integer x: ")) y = int(input("Give me an integer y: "))`
 
-## 10. System Prompt: Guiding the AI
+## 9. System Prompt: Guiding the AI
 
-*   **Core Concept:** Underlying APIs are given a "system prompt" – English-like instructions on how to behave.
-*   **CS50's System Prompt (Simplified):**
+*   **Mechanism:** CS50 guides the underlying AI APIs using a "system prompt" – English-like instructions on how the AI should behave.
+*   **Example System Prompt (Simplified):**
     ```
     You are a friendly and supportive teaching assistant for CS50.
     You are also a rubber duck.
     Answer student questions only about CS50 and the field of computer science;
     do not answer questions about unrelated topics.
     Do not provide full answers to problem sets, as this would violate academic honesty.
-    Answer this question:
+    Answer this question: [User's question is appended here]
     ```
-*   **User Prompt:** The student's question is then appended to this system prompt.
 
-## 11. Impact on Teaching and Learning Metrics
+## 10. Impact of AI Tools on Learning and Teaching
 
-*   **Impact on TAs:**
+*   **Impact on TA Questions:**
     *   **Without AI:** Students asked an average of **0.89 questions each** of TAs.
     *   **With AI:** Students asked an average of **0.28 questions each** of TAs, preferring the virtual duck.
-*   **Impact on Office Hours:**
+*   **Impact on Office Hours Attendance:**
     *   **Without AI:** Students attended **51%** of available office hours.
-    *   **With AI:** Students attended only **30%** of available office hours.
+    *   **With AI:** Students attended **30%** of available office hours.
 *   **Impact on Assessments:**
-    *   Grades are increasing, raising questions about what exactly is being assessed.
-    *   This is partly due to students receiving "iterative feedback throughout the week" from the AI, leading to better submissions.
-*   **Near-term Experimentation:** Resurrection of "yesterday's oral examinations," digitally implemented. The duck dynamically and adaptively asks questions about material to provide individualized assessments of strengths and weaknesses.
+    *   Grades are generally improving, posing questions about assessment design (distinguishing student work).
+    *   Iterative feedback from AI tools throughout the week likely contributes to higher quality submissions.
+*   **Future Directions (Near-Term):** Experimenting with digital oral examinations where the duck dynamically asks adaptive questions to assess student strengths and weaknesses.
 
-## 12. Student Feedback
+## 11. Student Feedback
 
-*   **Favorite Quote:** "It felt like having a personal tutor."
-*   **Key Benefits of AI Bots:**
-    *   Answer questions without ego and without judgment.
-    *   Entertain even "the stupidest of questions" without treating them as such.
-    *   Possess an "inhuman level of patience."
+*   **Quote:** "It felt like having a personal tutor. I love how AI bots will answer questions without ego and without judgment, generally entertaining even the stupidest of questions without treating them like they're stupid. It has an, as one could expect, inhuman level of patience."
 
-## 13. Further Reading
+## 12. Further Reading
 
-*   **Papers:**
+*   **Academic Papers:**
     *   "Teaching CS50 with AI" (ACM SIGCSE)
     *   "Improving AI in CS50" (Follow-on paper)
-*   **Access:** Papers and all related links can be found via a provided QR code.
+*   **Resources:** Papers and links can be found via a QR code (presented at the end of the lecture).
